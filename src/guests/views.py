@@ -13,6 +13,7 @@ import uuid
 from src.accounts.models import User
 from src.events.models import Events
 from rest_framework import status
+from toinvite_core.settings import BASE_DIR
 # Create your views here.
 
 
@@ -43,9 +44,12 @@ class ExportImportExcel(APIView):
         df.rename(columns={'full_name': 'ФИО', 'phone_number': 'Номер Телефона',
                   'event': 'Мероприятие'}, inplace=True)
         print(df)
-        df.to_excel(f"media/excel/{uuid.uuid4()}.xlsx",
+        file_name = uuid.uuid4()
+        df.to_excel(f"media/excel/{file_name}.xlsx",
                     encoding="UTF-8", index=False,)
-        return Response({'status': 200})
+        print(request.META['HTTP_HOST'])
+        file_path = f"{request.META['HTTP_HOST']}/media/excel/{file_name}.xlsx"
+        return Response(file_path, status=status.HTTP_200_OK)
 
     def post(self, request):
         exceled_uploud = ExcelFileUploud.objects.create(

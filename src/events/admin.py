@@ -13,7 +13,7 @@ class GuestForm(forms.ModelForm):
 # Register your models here.
 @admin.register(Events)
 class EventsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'categories', 'get_image')
+    list_display = ('id', 'title','admin','categories', 'get_image')
     list_filter = ('title',)
     list_display_links = ('title',)
     search_fields = ('title', 'description',)
