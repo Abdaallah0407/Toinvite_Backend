@@ -28,3 +28,11 @@ class GuestsUploudSerializer(serializers.ModelSerializer):
     class Meta:
         model = GuestsAdmin
         fields = ("id", "user", "guests_admin")
+
+
+class ListGuestsSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = GuestsList
+        fields = ("full_name", "phone_number",)
