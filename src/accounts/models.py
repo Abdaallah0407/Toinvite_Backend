@@ -25,8 +25,8 @@ class User(ImageCompressorMixin, AbstractUser):
                               null=True, blank=True, verbose_name='Изображение')
     role = models.PositiveSmallIntegerField(
         default=CLIENT_USER, choices=USER_TYPE, verbose_name="Роль")
-    USERNAME_FIELD = 'username' 
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number', 'address', 'city', 'email']
+    USERNAME_FIELD = 'username'
+    # REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number', 'address', 'city', 'email']
 
     def __str__(self):
         return self.username

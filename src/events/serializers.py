@@ -10,6 +10,11 @@ class EventsListSerializer(serializers.ModelSerializer):
         model = Events
         fields = "__all__"
 
+class EventsTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Events
+        fields = ['title']
+
 
 class EventsDetailSerializer(serializers.ModelSerializer):
     categories = serializers.SlugRelatedField(

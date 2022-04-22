@@ -16,12 +16,20 @@ class GuestsListResource(resources.ModelResource):
 
 @admin.register(GuestsList)
 class GuestsListAdmin(ImportExportModelAdmin):
-    list_display = ('id', 'full_name', 'admin', 'event', 'phone_number')
+    list_display = ('id', 'full_name', 'phone_number', 'admin', 'event')
     list_display_links = ('full_name',)
     list_filter = ('full_name',)
     resource_class = GuestsListResource
     # form = GuestsListForm
 
+
+@admin.register(GuestsAdmin)
+class GuestsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user',
+                    'data_added')
+    list_filter = ('user',)
+    list_display_links = ('user',)
+    search_fields = ('user', 'id')
 
 
 
