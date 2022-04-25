@@ -14,7 +14,7 @@ class GuestsListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GuestsList
-        fields = ("full_name", "phone_number", "event")
+        fields = ("full_name", "phone_number", "status","event")
 
     def get_labels():
         return dict([(f.name, f.verbose_name) for f in GuestsList._meta.fields + GuestsList._meta.many_to_many])
@@ -32,7 +32,6 @@ class GuestsUploudSerializer(serializers.ModelSerializer):
 
 class ListGuestsSerializer(serializers.ModelSerializer):
 
-
     class Meta:
         model = GuestsList
-        fields = ("full_name", "phone_number",)
+        fields = ("full_name", "phone_number","status")

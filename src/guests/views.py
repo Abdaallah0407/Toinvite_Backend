@@ -41,7 +41,7 @@ class ExportImportExcel(APIView):
         guests = GuestsList.objects.filter(admin__user=user, event=event)
         serializer = GuestsListSerializer(guests, many=True)
         df = pd.DataFrame(serializer.data)
-        df.rename(columns={'full_name': 'ФИО', 'phone_number': 'Номер Телефона',
+        df.rename(columns={'full_name': 'ФИО', 'phone_number': 'Номер Телефона','status': 'Статус',
                   'event': 'Мероприятие'}, inplace=True)
         print(df)
         file_name = uuid.uuid4()

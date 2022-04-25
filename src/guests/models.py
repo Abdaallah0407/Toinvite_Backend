@@ -31,6 +31,8 @@ class GuestsList(models.Model):
     full_name = models.CharField(max_length=50, verbose_name="Полное имя")
     phone_number = models.CharField(
         max_length=20, blank=True, null=True, verbose_name='Сотовый телефон')
+    status = models.BooleanField(
+        default=None, blank=True, null=True, verbose_name="Статус")
 
     class Meta:
         verbose_name = "Гость"

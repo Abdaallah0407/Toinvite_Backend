@@ -16,7 +16,7 @@ class GuestsListResource(resources.ModelResource):
 
 @admin.register(GuestsList)
 class GuestsListAdmin(ImportExportModelAdmin):
-    list_display = ('id', 'full_name', 'phone_number', 'admin', 'event')
+    list_display = ('id', 'full_name', 'phone_number', 'status','admin', 'event')
     list_display_links = ('full_name',)
     list_filter = ('full_name',)
     resource_class = GuestsListResource
