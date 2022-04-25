@@ -4,9 +4,8 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
 media/*
-!media/import/Import_Example.xlsx
+!media/import
 # Backup files # 
 *.bak 
 
