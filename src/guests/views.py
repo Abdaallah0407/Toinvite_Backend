@@ -77,3 +77,9 @@ class APIGuestList(ListAPIView):
         queryset = GuestsList.objects.filter(admin__user=user, event=event)
 
         return queryset
+
+
+class APIFileExample(APIView):
+    def get(self, request):
+        file_path = f"{request.META['HTTP_HOST']}/media/Import_Example.xlsx"
+        return Response(file_path, status=status.HTTP_200_OK)

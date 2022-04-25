@@ -139,3 +139,5 @@ GitHub.sublime-settings
 /staticfiles
 /static_in_pro
 /static
+
+!media/Import_Example.xlsx
