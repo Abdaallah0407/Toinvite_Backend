@@ -5,7 +5,8 @@
 __pycache__
 db.sqlite3
 media
-
+media/*
+!media/import/Import_Example.xlsx
 # Backup files # 
 *.bak 
 
@@ -139,5 +140,3 @@ GitHub.sublime-settings
 /staticfiles
 /static_in_pro
 /static
-
-!media/Import_Example.xlsx
