@@ -35,3 +35,9 @@ class ListGuestsSerializer(serializers.ModelSerializer):
     class Meta:
         model = GuestsList
         fields = ("full_name", "phone_number","status")
+
+
+class GuestsListItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuestsList
+        fields = "__all__"

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'knox',
     'import_export',
+    'phonenumber_field',
 
     'src.accounts',
     'src.categories',
@@ -174,6 +175,9 @@ REST_FRAMEWORK = {
     ],
 }
 
+PHONENUMBER_DB_FORMAT = 'E164'
+PHONENUMBER_DEFAULT_REGION = "KG"
+
 # smtp
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -181,9 +185,12 @@ EMAIL_HOST_USER = 'akfamedsigma@gmail.com'
 EMAIL_HOST_PASSWORD = 'turkmanovkgz'
 EMAIL_PORT = 587
 
-TWILIO_ACCOUNT_SID = 'AC7e206446c8d7d67c2b033065defb0794'
-TWILIO_AUTH_TOKEN = 'd64ee76af0fbd539baf20c8e8da7c9d5'
-TWILIO_NUMBER = '+18633493709'
+TWILIO_ACCOUNT_SID = 'AC3a644fe312f88c75999971ba4ebf040c'
+TWILIO_AUTH_TOKEN = '62f53ad039feb2eb0f6416bd7febbe2c'
+TWILIO_NUMBER = '+19592511918'
+
+
+
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',

@@ -4,6 +4,7 @@ from src.accounts.models import User
 from src.events.models import Events
 from toinvite_core import settings
 from twilio.rest import Client
+from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
 
@@ -32,7 +33,9 @@ class GuestsList(models.Model):
         Events, on_delete=models.CASCADE, blank=True, null=True)
     full_name = models.CharField(max_length=50, verbose_name="Полное имя")
     phone_number = models.CharField(
-        max_length=20, blank=True, null=True, verbose_name='Сотовый телефон')
+        max_length=20, blank=True, null=True, verbose_name="Сотвый Телефон")
+    number_secand = PhoneNumberField(
+        unique=True, null=False, blank=True, verbose_name="Домашний телефон")
     status = models.BooleanField(
         default=None, blank=True, null=True, verbose_name="Статус")
 
@@ -53,14 +56,18 @@ class GuestsList(models.Model):
             client = Client(account_sid, auth_token)
             print('Isa')
             for phone_number in phone_numbers:
-                print('lorem')
+
+                # phone_number = i.phone_number
+                # phone_number = '+' + phone_number
+
                 if phone_number:
                     print('ipsum')
                     message = client.messages.create(
                         body='{}  Вы были приглашены на {} !!! Которая состоится 15 декабря в 11.00 ресторан Ала-Тоо.'.format(
                             self.full_name, self.event),
-                        from_='+18633493709',
-                        to=phone_number)
+                        from_='+19592511918',
+                        to='{}'.format(
+                            self.phone_number))
                     print(message.sid)
 
         super().save(*args, **kwargs)

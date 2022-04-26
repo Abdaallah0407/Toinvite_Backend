@@ -37,11 +37,12 @@ class ExportImportExcel(APIView):
 
     def get(self, request):
         user = self.request.user
+        # event = Events.objects.get(pk=request.data['event'])
         event = Events.objects.get(pk=request.data['event'])
         guests = GuestsList.objects.filter(admin__user=user, event=event)
         serializer = GuestsListSerializer(guests, many=True)
         df = pd.DataFrame(serializer.data)
-        df.rename(columns={'full_name': 'ФИО', 'phone_number': 'Номер Телефона','status': 'Статус',
+        df.rename(columns={'full_name': 'ФИО', 'phone_number': 'Номер Телефона', 'status': 'Статус',
                   'event': 'Мероприятие'}, inplace=True)
         print(df)
         file_name = uuid.uuid4()
@@ -79,7 +80,47 @@ class APIGuestList(ListAPIView):
         return queryset
 
 
+class APIGuestsListItemsView(viewsets.ModelViewSet):
+    queryset = GuestsList.objects.all()
+    serializer_class = GuestsListItemsSerializer
+
+    def get_queryset(self):
+        queryset = GuestsList.objects.order_by('title')
+
+        return queryset
+
+
 class APIFileExample(APIView):
     def get(self, request):
         file_path = f"{request.META['HTTP_HOST']}/media/import/Import_Example.xlsx"
         return Response(file_path, status=status.HTTP_200_OK)
+
+
+class APIRAssylka(APIView):
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Only if the instance is being created the code is executed
+            user = self.request.user
+            event = Events.objects.get(pk=self.request.data['event'])
+            phone_numbers = [
+                profile.phone_number for profile in GuestsList.objects.filter(admin__user=user, event=event)]
+
+            account_sid = settings.TWILIO_ACCOUNT_SID
+            auth_token = settings.TWILIO_AUTH_TOKEN
+            client = Client(account_sid, auth_token)
+            print('Isa')
+            for phone_number in phone_numbers:
+
+                # phone_number = i.phone_number
+                # phone_number = '+' + phone_number
+
+                if phone_number:
+                    print('ipsum')
+                    message = client.messages.create(
+                        body='{}  Вы были приглашены на {} !!! Которая состоится 15 декабря в 11.00 ресторан Ала-Тоо.'.format(
+                            self.full_name, self.event),
+                        from_='+18633493709',
+                        to='{}'.format(
+                            self.phone_number))
+                    print(message.sid)
+
+        super().save(*args, **kwargs)
