@@ -1,3 +1,4 @@
+import profile
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -97,30 +98,28 @@ class APIFileExample(APIView):
 
 
 class APIRAssylka(APIView):
-    def save(self, *args, **kwargs):
-        if not self.pk:  # Only if the instance is being created the code is executed
-            user = self.request.user
-            event = Events.objects.get(pk=self.request.data['event'])
-            phone_numbers = [
-                profile.phone_number for profile in GuestsList.objects.filter(admin__user=user, event=event)]
+    permission_classes = (permissions.IsAuthenticated,)
 
-            account_sid = settings.TWILIO_ACCOUNT_SID
-            auth_token = settings.TWILIO_AUTH_TOKEN
-            client = Client(account_sid, auth_token)
-            print('Isa')
-            for phone_number in phone_numbers:
+    def post(self, *args, **kwargs):
+        account_sid = settings.TWILIO_ACCOUNT_SID
+        auth_token = settings.TWILIO_AUTH_TOKEN
+        client = Client(account_sid, auth_token)
+        # user = self.request.user
+        event = Events.objects.get(pk=self.request.data['event'])
+        if event.admin != self.request.user:
+            return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
 
-                # phone_number = i.phone_number
-                # phone_number = '+' + phone_number
+        guests = GuestsList.objects.filter(event=event)
 
-                if phone_number:
-                    print('ipsum')
-                    message = client.messages.create(
-                        body='{}  Вы были приглашены на {} !!! Которая состоится 15 декабря в 11.00 ресторан Ала-Тоо.'.format(
-                            self.full_name, self.event),
-                        from_='+18633493709',
-                        to='{}'.format(
-                            self.phone_number))
-                    print(message.sid)
+        for guest in guests:
+            if guest.phone_number:
+                phone_number = "+" + guest.phone_number
 
-        super().save(*args, **kwargs)
+                message = client.messages.create(
+                    body=f'{guest.full_name}  Вы были приглашены на {guest.event} !!! Которая состоится 15 декабря в 11.00 ресторан Ала-Тоо.',
+                    from_='+19592511918',
+                    to=phone_number)
+                print(message.sid)
+
+            # super().save(*args, **kwargs)
+        return Response('Messages sent successfully', status=status.HTTP_200_OK)
