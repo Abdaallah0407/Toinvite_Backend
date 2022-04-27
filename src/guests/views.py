@@ -15,6 +15,7 @@ from src.accounts.models import User
 from src.events.models import Events
 from rest_framework import status
 from toinvite_core.settings import BASE_DIR
+from twilio.rest import Client
 # Create your views here.
 
 

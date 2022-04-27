@@ -12,4 +12,7 @@ class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ('get_image',)
 
     def get_image(self, obj):
-        return mark_safe(f'<img src={obj.icon.url} width="100" height="80">')
+        if obj.icon:
+            return mark_safe(f'<img src={obj.icon.url} width="100" height="80">')
+        else:
+            pass
