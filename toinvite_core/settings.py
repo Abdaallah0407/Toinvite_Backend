@@ -181,9 +181,14 @@ PHONENUMBER_DEFAULT_REGION = "KG"
 # smtp
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 EMAIL_HOST_USER = 'akfamedsigma@gmail.com'
 EMAIL_HOST_PASSWORD = 'turkmanovkgz'
-EMAIL_PORT = 587
 
 TWILIO_ACCOUNT_SID = 'AC3a644fe312f88c75999971ba4ebf040c'
 TWILIO_AUTH_TOKEN = '62f53ad039feb2eb0f6416bd7febbe2c'
