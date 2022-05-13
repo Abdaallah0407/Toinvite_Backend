@@ -67,7 +67,7 @@ class ExportImportExcel(APIView):
                 event=Events.objects.get(pk=request.data['event'])
             )
             print(student)
-        return Response({'status': 200})
+        return Response('Import Succeeded', status=status.HTTP_200_OK)
 
 
 class APIGuestList(ListAPIView):
