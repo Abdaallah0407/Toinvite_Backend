@@ -4,6 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import *
 from .serializers import EventsDetailSerializer, EventsListSerializer
 from django.db.models import F
+from rest_framework import status
 
 # Create your views here.
 
@@ -20,6 +21,9 @@ class APIEventsViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return EventsListSerializer
         if self.action == "retrieve" or self.action == "update":
+            event = Events.objects.get(pk=self.request.data['event'])
+            if event.admin != self.request.user:
+                return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
             return EventsDetailSerializer
         return super().get_serializer_class()
 
