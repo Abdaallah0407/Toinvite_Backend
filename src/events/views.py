@@ -18,7 +18,7 @@ class APIEventsViewSet(viewsets.ModelViewSet):
 
 
     def get_serializer_class(self):
-        queryset = Events.objects.get(pk=self.request.data['event'])
+        queryset = Events.objects.get(pk=self.request.id)
         if queryset.admin != self.request.user:
             return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
         if self.action == 'list':
