@@ -11,7 +11,7 @@ from django.db.models import F
 class APIEventsViewSet(viewsets.ModelViewSet):
     queryset = Events.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = EventsListSerializer
 
