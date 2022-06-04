@@ -77,6 +77,11 @@ class APIGuestList(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         event = Events.objects.get(pk=self.request.data['event'])
+
+        if event.admin != self.request.user:
+            return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
+
+
         queryset = GuestsList.objects.filter(admin__user=user, event=event)
 
         return queryset
@@ -87,10 +92,7 @@ class APIGuestsListItemsView(viewsets.ModelViewSet):
     serializer_class = GuestsListItemsSerializer
 
     def get_queryset(self):
-        event = Events.objects.get(pk=self.request.data['event'])
-        if event.admin != self.request.user:
-            return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
-            
+        
         queryset = GuestsList.objects.order_by('title')
 
         return queryset
