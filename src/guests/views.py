@@ -72,17 +72,18 @@ class ExportImportExcel(APIView):
 
 class APIGuestList(ListAPIView):
     serializer_class = ListGuestsSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user
         event = Events.objects.get(pk=self.request.data['event'])
-
-        if event.admin != self.request.user:
-            return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
-
-
-        queryset = GuestsList.objects.filter(admin__user=user, event=event)
+        
+#  queryset = Events.objects.filter(
+#             admin=self.request.user, is_active=True, is_published=True)
+        # if event.admin != self.request.user:
+        #     return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
+            
+        queryset = GuestsList.objects.filter(admin=self.request.user, event=event)
 
         return queryset
 
