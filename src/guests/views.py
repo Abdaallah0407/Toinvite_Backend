@@ -112,7 +112,7 @@ class APIRAssylka(APIView):
         account_sid = settings.TWILIO_ACCOUNT_SID
         auth_token = settings.TWILIO_AUTH_TOKEN
         client = Client(account_sid, auth_token)
-        # user = self.request.user
+        user = self.request.user
         event = Events.objects.get(pk=self.request.data['event'])
         if event.admin != self.request.user:
             return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
