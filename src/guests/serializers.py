@@ -41,3 +41,11 @@ class GuestsListItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = GuestsList
         fields = "__all__"
+
+
+
+class GuestsListCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuestsList
+        fields = ['status',]
+
