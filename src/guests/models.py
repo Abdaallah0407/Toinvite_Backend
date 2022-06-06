@@ -25,7 +25,7 @@ class GuestsList(models.Model):
                               related_name='guests_admin', verbose_name="Админ", blank=True, null=True,)
     event = models.ForeignKey(
         Events, on_delete=models.CASCADE, blank=True, null=True)
-    full_name = models.CharField(max_length=50, verbose_name="Полное имя")
+    full_name = models.CharField(max_length=50,blank=True, verbose_name="Полное имя")
     phone_number = models.CharField(
         max_length=20, blank=True, null=True, verbose_name="Сотвый Телефон")
     status = models.BooleanField(

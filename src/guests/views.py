@@ -33,6 +33,16 @@ class APIGuestViewSet(viewsets.ModelViewSet):
             locker, context={'request': request})
         return Response(serializer.data)
 
+class APIGuestsListItemsView(viewsets.ModelViewSet):
+    queryset = GuestsList.objects.all()
+    serializer_class = GuestsListItemsSerializer
+
+    # def get_queryset(self):
+        
+    #     queryset = GuestsList.objects.order_by('title')
+
+    #     return queryset
+
 
 class ExportImportExcel(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -72,31 +82,20 @@ class ExportImportExcel(APIView):
 
 class APIGuestList(ListAPIView):
     serializer_class = ListGuestsSerializer
+    permission_classes = [IsAuthenticated]
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user
         event = Events.objects.get(pk=self.request.data['event'])
-        
-#  queryset = Events.objects.filter(
-#             admin=self.request.user, is_active=True, is_published=True)
-        # if event.admin != self.request.user:
-        #     return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
-            
-        queryset = GuestsList.objects.filter(admin=self.request.user, event=event)
 
+        if event.admin != self.request.user:
+            return Response('You are not admin of the event', status=status.HTTP_403_FORBIDDEN)
+
+
+        queryset = GuestsList.objects.filter(admin__user=user, event=event)
         return queryset
 
-
-class APIGuestsListItemsView(viewsets.ModelViewSet):
-    queryset = GuestsList.objects.all()
-    serializer_class = GuestsListItemsSerializer
-
-    def get_queryset(self):
-        
-        queryset = GuestsList.objects.order_by('title')
-
-        return queryset
 
 
 class APIFileExample(APIView):
@@ -131,3 +130,17 @@ class APIRAssylka(APIView):
 
             # super().save(*args, **kwargs)
         return Response('Messages sent successfully', status=status.HTTP_200_OK)
+
+
+
+
+class APIInterview(UpdateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = GuestsListCreateUpdateSerializer
+    queryset = GuestsList.objects.all()
+
+    def update(self, request, *args, **kwargs): 
+        get_id = self.request.query_params.get('get_id')
+        guest_item = GuestsList.objects.get(id=get_id)
+
+        return guest_item
