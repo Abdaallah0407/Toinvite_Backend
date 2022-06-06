@@ -38,7 +38,7 @@ class Events(models.Model):
         auto_now_add=True, verbose_name="Дата Создания")
     updatedAt = models.DateTimeField(
         auto_now=True, verbose_name="Дата изменение")
-    guests = models.ForeignKey( Guests, related_name="products_guests", on_delete=models.CASCADE, verbose_name="Гости", null=True)
+    guests = models.ForeignKey( Guests, related_name="products_guests", on_delete=models.CASCADE, verbose_name="Гости", null=True, blank=True)
     is_active = models.BooleanField(default=False, verbose_name="Активный")
     is_published = models.BooleanField(
         default=False, verbose_name="Опубликовано")

@@ -10,3 +10,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('is_staff', 'username', 'email')
     list_display_links = ('username',)
     list_editable = ('is_staff',)
+
+    def save_model(self, request, obj, form, change):
+        super(ProductAdmin, self).save_model(request, obj, form, change)
+        obj.set_password(form.cleaned_data['password'])
+        obj.save()
