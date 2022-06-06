@@ -33,6 +33,16 @@ class APIGuestViewSet(viewsets.ModelViewSet):
             locker, context={'request': request})
         return Response(serializer.data)
 
+class APIGuestsListItemsView(viewsets.ModelViewSet):
+    queryset = GuestsList.objects.all()
+    serializer_class = GuestsListItemsSerializer
+
+    # def get_queryset(self):
+        
+    #     queryset = GuestsList.objects.order_by('title')
+
+    #     return queryset
+
 
 class ExportImportExcel(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -86,15 +96,6 @@ class APIGuestList(ListAPIView):
         queryset = GuestsList.objects.filter(admin__user=user, event=event)
         return queryset
 
-class APIGuestsListItemsView(viewsets.ModelViewSet):
-    queryset = GuestsList.objects.all()
-    serializer_class = GuestsListItemsSerializer
-
-    def get_queryset(self):
-        
-        queryset = GuestsList.objects.order_by('title')
-
-        return queryset
 
 
 class APIFileExample(APIView):
@@ -139,4 +140,7 @@ class APIInterview(UpdateAPIView):
     queryset = GuestsList.objects.all()
 
     def update(self, request, *args, **kwargs): 
-        guest_item = GuestsList.objects.get(id=cart_id)
+        get_id = self.request.query_params.get('get_id')
+        guest_item = GuestsList.objects.get(id=get_id)
+
+        return guest_item

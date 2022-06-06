@@ -1,7 +1,7 @@
 from django.urls import path
 from django.urls import include
 from rest_framework import routers
-from .views import ExportImportExcel, APIGuestViewSet, APIGuestList, APIFileExample, APIGuestsListItemsView, APIRAssylka
+from .views import ExportImportExcel, APIGuestViewSet, APIGuestList, APIFileExample, APIGuestsListItemsView, APIRAssylka, APIInterview
 
 router = routers.DefaultRouter()
 
@@ -15,4 +15,5 @@ urlpatterns = [
     path('api/guest-list/', APIGuestList.as_view()),
     path('api/file_example/', APIFileExample.as_view()),
     path('api/rassylka/', APIRAssylka.as_view()),
+    path('api/interview/', APIInterview.as_view()),
 ]
