@@ -103,7 +103,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'toinvite',
-        'USER': 'toinvite_admin',
+        'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost'
     }
