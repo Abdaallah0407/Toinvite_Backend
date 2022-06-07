@@ -41,13 +41,21 @@ class UploadFileSerializer(serializers.Serializer):
 class GuestsListSerializer(serializers.ModelSerializer):
     # event = EventsTitleSerializer(read_only=True)
     event = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
 
     def get_event(self, instance):
         return instance.event.title
 
     class Meta:
         model = GuestsList
-        fields = ("full_name", "phone_number", "status","event")
+        fields = ("full_name", "phone_number", "status", "event")
+
+    def get_status(self, instance):
+        if instance.status == None:
+            return 'Подумаю'
+        if not instance.status:
+            return 'Нет'
+        return 'Да'
 
     def get_labels():
         return dict([(f.name, f.verbose_name) for f in GuestsList._meta.fields + GuestsList._meta.many_to_many])

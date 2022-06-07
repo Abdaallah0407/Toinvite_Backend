@@ -52,7 +52,7 @@ class ExportImportExcel(APIView):
     def get(self, request):
         user = self.request.user
         # event = Events.objects.get(pk=request.data['event'])
-        event = Events.objects.get(pk=request.data['event'])
+        event = Events.objects.get(pk=request.query_params['event'])
         guests = GuestsList.objects.filter(admin__user=user, event=event)
         serializer = GuestsListSerializer(guests, many=True)
         df = pd.DataFrame(serializer.data)
