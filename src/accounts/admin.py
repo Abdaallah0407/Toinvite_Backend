@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
+from ..guests.models import GuestsAdmin
 
 
 @admin.register(User)
@@ -15,3 +16,4 @@ class ProductAdmin(admin.ModelAdmin):
         super(ProductAdmin, self).save_model(request, obj, form, change)
         obj.set_password(form.cleaned_data['password'])
         obj.save()
+        GuestsAdmin.objects.create(user=obj)
