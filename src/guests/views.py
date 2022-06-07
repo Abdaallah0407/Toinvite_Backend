@@ -156,12 +156,26 @@ class APIInterview(UpdateAPIView):
 
         return guest_item
 
-class APIGuestInvitation(RetrieveAPIView, UpdateAPIView):
+class APIGuestInvitation(RetrieveAPIView):
     permission_classes = (permissions.AllowAny,)
-    serializer_class = GuestsListSerializer
     queryset = GuestsList.objects.all()
+    serializer_class = InvitationSerializer
 
     def retrieve(self, request, *args, **kwargs):
         obj = self.get_object()
         serializer = InvitationSerializer(obj)
         return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        partial = False
+        instance = self.get_object()
+        serializer = InvitationUpdateSerializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save()

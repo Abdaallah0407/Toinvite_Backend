@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import *
 
+class InvitationUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuestsList
+        fields = ('status',)
+
 
 class InvitationSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source='event.title')
