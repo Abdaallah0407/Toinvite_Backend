@@ -1,8 +1,36 @@
 from rest_framework import serializers
 from .models import *
-from rest_framework_csv import renderers as r
-from rest_framework.settings import api_settings
-from src.events.serializers import EventsTitleSerializer
+
+
+class InvitationSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(source='event.title')
+    date_start = serializers.SerializerMethodField()
+    date_end = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GuestsList
+        fields = ('title', 'date_start', 'date_end', 'location', 'status')
+
+    def get_date_start(self, obj):
+        return obj.event.dateAt
+
+    def get_date_end(self, obj):
+        return obj.event.dateEnd
+
+    def get_location(self, obj):
+        location = ''
+        if obj.event.location:
+            location += obj.event.location.name
+            if obj.event.location.city:
+                location += f', {obj.event.location.city.name}'
+            return location
+        return None
+
+
+class UploadFileSerializer(serializers.Serializer):
+    file = serializers.FileField()
+    event = serializers.IntegerField()
 
 
 class GuestsListSerializer(serializers.ModelSerializer):

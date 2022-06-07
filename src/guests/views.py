@@ -1,8 +1,9 @@
 import profile
 from django.shortcuts import render, get_object_or_404
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, parsers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import *
 from django.conf import settings
@@ -17,6 +18,7 @@ from rest_framework import status
 from toinvite_core.settings import BASE_DIR
 from twilio.rest import Client
 # Create your views here.
+from .sms_send import sms_send
 
 
 class APIGuestViewSet(viewsets.ModelViewSet):
@@ -64,19 +66,28 @@ class ExportImportExcel(APIView):
         file_path = f"{request.META['HTTP_HOST']}/media/excel/{file_name}.xlsx"
         return Response(file_path, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=UploadFileSerializer, parser_classes=(parsers.MultiPartParser, parsers.JSONParser))
     def post(self, request):
         exceled_uploud = ExcelFileUploud.objects.create(
-            excel_file_uploud=request.FILES['files'])
+            excel_file_uploud=request.FILES['file'])
         df = pd.read_excel(
-            f"{settings.BASE_DIR}/media/{exceled_uploud.excel_file_uploud}")
+            f"{settings.BASE_DIR}/media/{exceled_uploud.excel_file_uploud}"
+        )
         for student in (df.values.tolist()):
-            GuestsList.objects.create(
+            guest = GuestsList.objects.create(
                 full_name=student[0],
-                phone_number=student[1],
+                phone_number=student[1] if len(student) > 1 else None,
                 admin=GuestsAdmin.objects.get(user=request.user),
                 event=Events.objects.get(pk=request.data['event'])
             )
-            print(student)
+            if guest.phone_number:
+                url = f"http://164.92.245.139/invitation/?guest_id={guest.id}"
+                text = f'Вы были приглашены на мероприятие: {guest.event.title}. ' \
+                       f'Принять или отклонить приглашение вы можете по ссылке: {url}'
+                phone_number = str(guest.phone_number)
+                if not phone_number[0] == '+':
+                    phone_number = '+' + phone_number
+                sms_send(phone_number, text)
         return Response('Import Succeeded', status=status.HTTP_200_OK)
 
 
@@ -144,3 +155,13 @@ class APIInterview(UpdateAPIView):
         guest_item = GuestsList.objects.get(id=get_id)
 
         return guest_item
+
+class APIGuestInvitation(RetrieveAPIView, UpdateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = GuestsListSerializer
+    queryset = GuestsList.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        obj = self.get_object()
+        serializer = InvitationSerializer(obj)
+        return Response(serializer.data)
