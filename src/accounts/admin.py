@@ -14,6 +14,6 @@ class ProductAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super(ProductAdmin, self).save_model(request, obj, form, change)
-        GuestsAdmin.objects.create(user=obj)
+        GuestsAdmin.objects.get_or_create(user=obj)
         obj.set_password(form.cleaned_data['password'])
         obj.save()
