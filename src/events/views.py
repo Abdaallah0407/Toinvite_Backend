@@ -37,7 +37,7 @@ class APIEventsViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         if data.get('location'):
-            data['location'] = Address.objects.create(name=data['location']).id
+            data['location'] = Address.objects.create(name=data['location'], numeration=1).id
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
