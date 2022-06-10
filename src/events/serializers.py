@@ -12,6 +12,12 @@ class GuestListSerializer(serializers.ModelSerializer):
         fields = ('full_name', 'phone_number', 'status')
 
 
+class EventsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Events
+        fields = ('admin', 'dateAt', 'dateEnd', 'is_active', 'is_published', 'location', 'title')
+
+
 class EventsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Events
