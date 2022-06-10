@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9djb(=$ehz0kpermynnd9k=1-7(k3*0af%$jcs0adk(r6vk@jo'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = ['164.92.245.139', 'localhost', '127.0.0.1',]
 
@@ -189,13 +191,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'akfamedsigma@gmail.com'
 EMAIL_HOST_PASSWORD = 'turkmanovkgz'
 
-TWILIO_ACCOUNT_SID = 'AC3a644fe312f88c75999971ba4ebf040c'
-TWILIO_AUTH_TOKEN = '8c857de8d1aa946da4604f82a87d5aa9'
-TWILIO_NUMBER = '+19592511918'
-
-
-
-
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
@@ -230,3 +225,11 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+if DEBUG:
+    TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID_TEST')
+    TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN_TEST')
+else:
+    TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
+    TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
+TWILIO_NUMBER = config('TWILIO_NUMBER')
