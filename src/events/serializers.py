@@ -19,9 +19,18 @@ class EventsCreateSerializer(serializers.ModelSerializer):
 
 
 class EventsListSerializer(serializers.ModelSerializer):
+    accepted = serializers.SerializerMethodField()
+    declined = serializers.SerializerMethodField()
+
     class Meta:
         model = Events
         fields = "__all__"
+
+    def get_accepted(self, instance):
+        return GuestsList.objects.filter(event=instance, status=True).count()
+
+    def get_declined(self, instance):
+        return GuestsList.objects.filter(event=instance, status=False).count()
 
 class EventsTitleSerializer(serializers.ModelSerializer):
     class Meta:
