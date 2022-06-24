@@ -229,3 +229,10 @@ SIMPLE_JWT = {
 TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
 TWILIO_NUMBER = config('TWILIO_NUMBER')
+
+
+NIKITA_USERNAME = 'toinvite_fmp'
+NIKITA_PASS = 'HOGVEEry'
+NIKITA_SENDER = 'ToInvite'
+NIKITA_TEST = 1
+NIKITA_URL = 'https://smspro.nikita.kg/api/message'

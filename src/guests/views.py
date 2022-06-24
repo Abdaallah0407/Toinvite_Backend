@@ -18,7 +18,7 @@ from rest_framework import status
 from toinvite_core.settings import BASE_DIR
 from twilio.rest import Client
 # Create your views here.
-from .sms_send import sms_send
+from .sms_send import sms_send, nikita_sms_send
 
 
 class APIGuestViewSet(viewsets.ModelViewSet):
@@ -85,9 +85,7 @@ class ExportImportExcel(APIView):
                 text = f'Вы были приглашены на мероприятие: {guest.event.title}. ' \
                        f'Принять или отклонить приглашение вы можете по ссылке: {url}'
                 phone_number = str(guest.phone_number)
-                if not phone_number[0] == '+':
-                    phone_number = '+' + phone_number
-                sms_send(phone_number, text)
+                nikita_sms_send(text, phone_number)
         return Response('Import Succeeded', status=status.HTTP_200_OK)
 
 

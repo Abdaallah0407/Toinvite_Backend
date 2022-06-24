@@ -6,6 +6,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==36.0.2
 defusedxml==0.7.1
+dicttoxml==1.7.4
 diff-match-patch==20200713
 Django==3.2.12
 django-admin-interface==0.19.0
