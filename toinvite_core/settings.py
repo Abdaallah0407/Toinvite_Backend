@@ -233,6 +233,6 @@ TWILIO_NUMBER = config('TWILIO_NUMBER')
 
 NIKITA_USERNAME = 'toinvite_fmp'
 NIKITA_PASS = 'HOGVEEry'
-NIKITA_SENDER = 'ToInvite'
-NIKITA_TEST = 1
+NIKITA_SENDER = 'SMSPRO.KG'
+NIKITA_TEST = 0
 NIKITA_URL = 'https://smspro.nikita.kg/api/message'
