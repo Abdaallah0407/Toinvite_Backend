@@ -26,7 +26,7 @@ class APIEventsViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        queryset = Events.objects.all().order_by('title')
+        queryset = Events.objects.filter(admin=self.request.user).order_by('title')
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
